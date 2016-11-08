@@ -1,0 +1,31 @@
+Source: pantilthat
+Maintainer: Phil Howard <phil@pimoroni.com>
+Homepage: https://github.com/pimoroni/pantilt-hat
+Section: python
+Priority: extra
+Build-Depends: debhelper (>= 9.0.0), dh-python, python-all (>= 2.7), python-setuptools, python3-all (>= 3.4), python3-setuptools
+Standards-Version: 3.9.6
+X-Python-Version: >= 2.7
+X-Python3-Version: >= 3.4
+
+Package: python-pantilthat
+Architecture: all
+Section: python
+Depends: ${misc:Depends}, ${python:Depends}, python-rpi.gpio
+Suggests: python-psutil, python-requests
+Description: python library designed to control PanTilt HAT
+ PanTilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
+ Ideal for adding a Pan/Tilt camera to your Pi.
+ .
+ This is the Python 2 version of the package.
+
+Package: python3-pantilthat
+Architecture: all
+Section: python
+Depends: ${misc:Depends}, ${python3:Depends}, python3-rpi.gpio
+Suggests: python3-psutil, python3-requests
+Description: python library designed to control PanTilt HAT
+ PanTilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
+ Ideal for adding a Pan/Tilt camera to your Pi.
+ .
+ This is the Python 3 version of the package.

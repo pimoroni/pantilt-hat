@@ -111,12 +111,13 @@ import pantilthat
 # Bit 1 - Enable Servo 1
 
 print("Testing constants...")
-assert pantilthat.LightMode.WS2812 == 1, "pantilthat.LightMode.WS2812 should equal 1"
-assert pantilthat.LightMode.PWM == 0, "pantilthat.LightMode.PWM should equal 0"
+assert pantilthat.WS2812 == 1, "pantilthat.WS2812 should equal 1"
+assert pantilthat.PWM == 0, "pantilthat.PWM should equal 0"
 print("OK!")
 
-print("\nInstantiating library...")
-pt = pantilthat.PanTilt()
+# print("\nInstantiating library...")
+# pt = pantilthat.PanTilt()
+pt = pantilthat
 
 assert regs[REG_CONFIG] == 0b00001111, "Config reg incorrect!: {}".format(regs[REG_CONFIG])
 print("OK!")
@@ -127,7 +128,8 @@ assert pt.tilt == pt.servo_two, "Method 'tilt' should alias 'servo_two'"
 print("OK!")
 
 print("\nSetting known good config...")
-pt.servos_on(True)
+pt.servo_enable(1,True)
+pt.servo_enable(2,True)
 
 pt.servo_pulse_min(1,510)
 pt.servo_pulse_max(1,2300)
@@ -159,6 +161,13 @@ for x in reversed(range(-90,91)):
 	pt.tilt(x)
 print("OK!")
 
+print("\nTesting servo_enable...")
+pt.servo_enable(1,False)
+pt.servo_enable(2,False)
+
+assert regs[REG_CONFIG] == 0b00001100, "Config reg {} incorrect! Should be 0b00001100".format(regs[REG_CONFIG])
+print("OK")
+
 print("\n=== LIGHTS ===")
 
 print("\nTesting range checks...")
@@ -184,8 +193,8 @@ i2c_assert(lambda:pt.show(),
 print("OK!")
 
 print("\nChanging light mode...")
-pt.light_mode(pantilthat.LightMode.PWM)
-assert regs[REG_CONFIG] == 0b00000111
+pt.light_mode(pantilthat.PWM)
+assert regs[REG_CONFIG] == 0b00000100 # The servos were disabled above
 print("OK!")
 
 print("\nWell done, you've not broken anything!") # I'll never forgive myself :D
