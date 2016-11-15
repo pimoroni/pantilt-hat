@@ -48,6 +48,7 @@ setup(
     keywords        = 'Raspberry Pi',
     url             = 'http://www.pimoroni.com',
     classifiers     = classifiers,
-    py_modules      = ['pantilthat'],
+    py_modules      = [],
+    packages        = ['pantilthat'],
     install_requires= []
 )
