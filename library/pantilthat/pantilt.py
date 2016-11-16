@@ -24,9 +24,9 @@ class PanTilt:
         enable_servo2 = True,
         enable_lights = True,
         light_mode = WS2812,
-        servo1_min = 510,
+        servo1_min = 800,
         servo1_max = 2300,
-        servo2_min = 510,
+        servo2_min = 800,
         servo2_max = 2300,
         address = 0x15,
         i2c_bus = None):
