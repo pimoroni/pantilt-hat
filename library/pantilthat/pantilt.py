@@ -1,3 +1,6 @@
+import time
+
+
 WS2812 = 1
 PWM = 0
 
@@ -21,12 +24,15 @@ class PanTilt:
         enable_servo2 = True,
         enable_lights = True,
         light_mode = WS2812,
-        servo1_min = 510,
+        servo1_min = 800,
         servo1_max = 2300,
-        servo2_min = 510,
+        servo2_min = 800,
         servo2_max = 2300,
         address = 0x15,
         i2c_bus = None):
+
+        self._i2c_retries = 10
+        self._i2c_retry_time = 0.01
 
         self._enable_servo1 = enable_servo1
         self._enable_servo2 = enable_servo2
@@ -88,20 +94,51 @@ class PanTilt:
 
     def _i2c_write_block(self, reg, data):
         if type(data) is list:
-            self._i2c.write_i2c_block_data(self._i2c_address, reg, data)
+            for x in range(self._i2c_retries):
+                try:
+                    self._i2c.write_i2c_block_data(self._i2c_address, reg, data)
+                    return
+                except IOError:
+                    time.sleep(self._i2c_retry_time)
+                    continue
+
+            raise IOError("Failed to write block")
         else:
             raise ValueError("Value must be a list")
 
     def _i2c_write_word(self, reg, data):
         if type(data) is int:
-            self._i2c.write_word_data(self._i2c_address, reg, data)
+            for x in range(self._i2c_retries):
+                try:
+                    self._i2c.write_word_data(self._i2c_address, reg, data)
+                    return
+                except IOError:
+                    time.sleep(self._i2c_retry_time)
+                    continue
+
+            raise IOError("Failed to write word")
 
     def _i2c_write_byte(self, reg, data):
         if type(data) is int:
-            self._i2c.write_byte_data(self._i2c_address, reg, data)
+            for x in range(self._i2c_retries):
+                try:
+                    self._i2c.write_byte_data(self._i2c_address, reg, data)
+                    return
+                except IOError:
+                    time.sleep(self._i2c_retry_time)
+                    continue
+
+            raise IOError("Failed to write byte")
 
     def _i2c_read_byte(self, reg):
-        return self._i2c.read_byte_data(self._i2c_address, reg)
+        for x in (rangeself._i2c_retries):
+            try:
+                return self._i2c.read_byte_data(self._i2c_address, reg)
+            except IOError:
+                time.sleep(self._i2c_retry_time)
+                continue
+
+        raise IOError("Failed to read byte")
 
     def clear(self):
         """Clear the buffer."""
@@ -171,6 +208,7 @@ class PanTilt:
         self._i2c_write_block(self.REG_WS2812 + 32, self._pixels[32:64])
         self._i2c_write_block(self.REG_WS2812 + 64, self._pixels[64:])
         self._i2c_write_byte(self.REG_UPDATE, 1)
+        #time.sleep(0.01)
 
     def servo_enable(self, index, state):
         """Enables/disables a servo.
