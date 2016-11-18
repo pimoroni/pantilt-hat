@@ -10,6 +10,8 @@ except ImportError:
 
 from .pantilt import PanTilt, WS2812, PWM
 
+__version__ = '0.0.0'
+
 pantilt = PanTilt(i2c_bus=SMBus(1))
 
 def brightness(brightness):
