@@ -12,43 +12,32 @@ from .pantilt import PanTilt, WS2812, PWM
 
 __version__ = '0.0.1'
 
-pantilt = PanTilt(i2c_bus=SMBus(1))
+pantilthat = PanTilt(i2c_bus=SMBus(1))
 
-def brightness(brightness):
-    pantilt.brightness(brightness)
+brightness = pantilthat.brightness
 
-def clear():
-    pantilt.clear()
+clear = pantilthat.clear
 
-def light_mode(mode):
-    pantilt.light_mode(mode)
+light_mode = pantilthat.light_mode
 
-def servo_one(angle):
-    pantilt.servo_one(angle)
+servo_one = pantilthat.servo_one
 
-def servo_pulse_max(index, value):
-    pantilt.servo_pulse_max(index, value)
+servo_pulse_max = pantilthat.servo_pulse_max
 
-def servo_pulse_min(index, value):
-    pantilt.servo_pulse_min(index, value)
+servo_pulse_min = pantilthat.servo_pulse_min
 
-def servo_two(angle):
-    pantilt.servo_two(angle)
+servo_two = pantilthat.servo_two
 
-def servo_enable(index, state):
-    pantilt.servo_enable(index, state)
+servo_enable = pantilthat.servo_enable
 
-def set_all(red, blue, green):
-    pantilt.set_all(red, blue, green)
+set_all = pantilthat.set_all
 
-def set_pixel(index, red, blue, green):
-    pantilt.set_pixel(index, red, blue, green)
+set_pixel = pantilthat.set_pixel
 
-def set_pixel_rgbw(index, red, blue, green, white):
-    pantilt.set_pixel_rgbw(index, red, blue, green, white)
+set_pixel_rgbw = pantilthat.set_pixel_rgbw
 
-def show():
-    pantilt.show()
+show = pantilthat.show
 
-pan = servo_one
-tilt = servo_two
+pan = pantilthat.servo_one
+
+tilt = pantilthat.servo_two

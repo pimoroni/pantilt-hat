@@ -110,6 +110,11 @@ import pantilthat
 # Bit 2 - Enable Servo 2
 # Bit 1 - Enable Servo 1
 
+print("Testing help...")
+time.sleep(1)
+help(pantilthat.brightness)
+help(pantilthat.pan)
+
 print("Testing constants...")
 assert pantilthat.WS2812 == 1, "pantilthat.WS2812 should equal 1"
 assert pantilthat.PWM == 0, "pantilthat.PWM should equal 0"

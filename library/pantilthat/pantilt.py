@@ -182,6 +182,18 @@ class PanTilt:
             self.set_pixel(index, red, green, blue)
 
     def set_pixel_rgbw(self, index, red, green, blue, white):
+        """Set a single pixel in the buffer for GRBW lighting stick.
+
+        Instead of driving 24 RGB pixels, you can drive 18 RGBW ones.
+
+        :param index: Index of pixel from 0 to 17
+        :param red: Amount of red, from 0 to 255
+        :param green: Amount of green, from 0 to 255
+        :param blue: Amount of blue, from 0 to 255
+        :param white: Amount of white, from 0 to 255
+
+        """
+
         self._check_int_range(index, 0, 17)
 
         for c in [red, green, blue, white]:
