@@ -181,6 +181,18 @@ class PanTilt:
         for index in range(24):
             self.set_pixel(index, red, green, blue)
 
+    def set_pixel_rgbw(self, index, red, green, blue, white):
+        self._check_int_range(index, 0, 17)
+
+        for c in [red, green, blue, white]:
+            self._check_int_range(c, 0, 255)
+
+        index *= 4
+        self._pixels[index]   = green
+        self._pixels[index+1] = red
+        self._pixels[index+2] = blue
+        self._pixels[index+3] = white
+
     def set_pixel(self, index, red, green, blue):
         """Set a single pixel in the buffer.
 

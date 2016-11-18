@@ -42,6 +42,9 @@ def set_all(red, blue, green):
 def set_pixel(index, red, blue, green):
     pantilt.set_pixel(index, red, blue, green)
 
+def set_pixel_rgbw(index, red, blue, green, white):
+    pantilt.set_pixel_rgbw(index, red, blue, green, white)
+
 def show():
     pantilt.show()
 
