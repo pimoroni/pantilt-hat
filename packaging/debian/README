@@ -1,8 +1,8 @@
 README
 
-PanTilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
+Pan-Tilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
 
 Ideal for adding a Pan/Tilt camera to your Pi.
 
-Learn more: https://shop.pimoroni.com/products/pantilthat
-For examples run: `curl -sS get.pimoroni.com/pantilthat | bash`
+https://shop.pimoroni.com/products/pan-tilt-hat
+For examples run: `curl -sS https://get.pimoroni.com/pantilthat | bash`
