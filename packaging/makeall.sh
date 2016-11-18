@@ -6,6 +6,9 @@ reponame="" # leave this blank for auto-detection
 libname="" # leave this blank for auto-detection
 packagename="" # leave this blank for auto-selection
 
+rpigpio="no" # set to 'no' to turn off warning
+smbus="yes" # set to 'no' to turn off warning
+
 debianlog="debian/changelog"
 debcontrol="debian/control"
 debcopyright="debian/copyright"
@@ -121,6 +124,13 @@ if ! grep "^Priority: extra" $debcontrol &> /dev/null; then
     warning "$(grep "^Priority" $debcontrol)" && FLAG=true
 fi
 
+if [ $rpigpio == "yes" ] && ! grep "rpi.gpio" $debcontrol &> /dev/null; then
+    warning "if this library does not depend on rpi.gpio change 'rpigpio' variable!" && FLAG=true
+fi
+
+if [ $smbus == "yes" ] && ! grep "smbus" $debcontrol &> /dev/null; then
+    warning "if this library does not depend on smbus change the 'smbus' variable!" && FLAG=true
+fi
 
 # checking debian/rules file
 
