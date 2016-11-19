@@ -1,9 +1,13 @@
-import pantilthat as pt
-import time
-import math
-import colorsys
+#!/usr/bin/env python
 
-pt.light_mode(pt.WS2812)
+import colorsys
+import math
+import time
+
+import pantilthat
+
+
+pantilthat.light_mode(pantilthat.WS2812)
 
 while True:
     t = time.time()
@@ -11,10 +15,10 @@ while True:
     b = int(b * 255.0)
     t = round(time.time() * 1000) / 1000
     a = round(math.sin(t) * 90)
-    pt.pan(int(a))
-    pt.tilt(int(a))
+    pantilthat.pan(int(a))
+    pantilthat.tilt(int(a))
     r, g, b = [int(x*255) for x in  colorsys.hsv_to_rgb(((t*100) % 360) / 360.0, 1.0, 1.0)]
-    pt.set_all(r, g, b)
-    pt.show()
+    pantilthat.set_all(r, g, b)
+    pantilthat.show()
     print(a)
     time.sleep(0.04)

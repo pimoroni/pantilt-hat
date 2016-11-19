@@ -1,7 +1,11 @@
-import pantilthat
-import time
-import math
+#!/usr/bin/env python
+
 import colorsys
+import math
+import time
+
+import pantilthat
+
 
 pantilthat.light_mode(pantilthat.WS2812)
 
