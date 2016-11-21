@@ -11,10 +11,10 @@ X-Python3-Version: >= 3.4
 Package: python-pantilthat
 Architecture: all
 Section: python
-Depends: ${misc:Depends}, ${python:Depends}, python-rpi.gpio
-Suggests: python-psutil, python-requests
-Description: python library designed to control PanTilt HAT
- PanTilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
+Depends: ${misc:Depends}, ${python:Depends}, python-smbus
+Suggests: python-picamera
+Description: python library designed to control Pan-Tilt HAT
+ Pan-Tilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
  Ideal for adding a Pan/Tilt camera to your Pi.
  .
  This is the Python 2 version of the package.
@@ -22,10 +22,10 @@ Description: python library designed to control PanTilt HAT
 Package: python3-pantilthat
 Architecture: all
 Section: python
-Depends: ${misc:Depends}, ${python3:Depends}, python3-rpi.gpio
-Suggests: python3-psutil, python3-requests
-Description: python library designed to control PanTilt HAT
- PanTilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
+Depends: ${misc:Depends}, ${python3:Depends}, python3-smbus
+Suggests: python3-picamera
+Description: python library designed to control Pan-Tilt HAT
+ Pan-Tilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
  Ideal for adding a Pan/Tilt camera to your Pi.
  .
  This is the Python 3 version of the package.
