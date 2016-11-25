@@ -33,3 +33,9 @@ sudo pip2 install pantilthat
 ```
 
 In all cases you will have to enable the i2c bus.
+
+##Documentation & Support
+
+* Function reference - http://docs.pimoroni.com/pantilthat/
+* GPIO Pinout - https://pinout.xyz/pinout/pan_tilt_hat
+* Get help - http://forums.pimoroni.com/c/support
