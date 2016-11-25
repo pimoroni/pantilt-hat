@@ -20,6 +20,12 @@ If you choose to download examples you'll find them in `/home/pi/Pimoroni/pantil
 
 **Library install for Python 3:**
 
+on Raspbian:
+
+```bash
+sudo apt-get install python3-pantilthat
+```
+other environments: 
 
 ```bash
 sudo pip3 install pantilthat
@@ -27,6 +33,12 @@ sudo pip3 install pantilthat
 
 **Library install for Python 2:**
 
+on Raspbian:
+
+```bash
+sudo apt-get install python-pantilthat
+```
+other environments: 
 
 ```bash
 sudo pip2 install pantilthat
