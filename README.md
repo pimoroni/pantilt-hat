@@ -20,6 +20,12 @@ If you choose to download examples you'll find them in `/home/pi/Pimoroni/pantil
 
 **Library install for Python 3:**
 
+on Raspbian:
+
+```bash
+sudo apt-get install python3-pantilthat
+```
+other environments: 
 
 ```bash
 sudo pip3 install pantilthat
@@ -27,9 +33,21 @@ sudo pip3 install pantilthat
 
 **Library install for Python 2:**
 
+on Raspbian:
+
+```bash
+sudo apt-get install python-pantilthat
+```
+other environments: 
 
 ```bash
 sudo pip2 install pantilthat
 ```
 
 In all cases you will have to enable the i2c bus.
+
+##Documentation & Support
+
+* Function reference - http://docs.pimoroni.com/pantilthat/
+* GPIO Pinout - https://pinout.xyz/pinout/pan_tilt_hat
+* Get help - http://forums.pimoroni.com/c/support
