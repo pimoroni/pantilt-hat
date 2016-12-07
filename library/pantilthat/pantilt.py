@@ -1,3 +1,4 @@
+from threading import Timer
 import time
 import atexit
 
@@ -21,9 +22,8 @@ class PanTilt:
     NUM_LEDS = 24
 
     def __init__(self,
-        enable_servo1 = True,
-        enable_servo2 = True,
         enable_lights = True,
+        idle_timeout = 2, # Idle timeout in seconds
         light_mode = WS2812,
         servo1_min = 575,
         servo1_max = 2325,
@@ -32,11 +32,15 @@ class PanTilt:
         address = 0x15,
         i2c_bus = None):
 
+        self._idle_timeout = idle_timeout
+        self._servo1_timeout = None
+        self._servo2_timeout = None
+
         self._i2c_retries = 10
         self._i2c_retry_time = 0.01
 
-        self._enable_servo1 = enable_servo1
-        self._enable_servo2 = enable_servo2
+        self._enable_servo1 = False
+        self._enable_servo2 = False
         self._enable_lights = enable_lights
         self._light_on = 0
 
@@ -57,6 +61,9 @@ class PanTilt:
         self._enable_servo1 = False
         self._enable_servo2 = False
         self._set_config()
+
+    def idle_timeout(self, value):
+        self._idle_timeout = value
 
     def _set_config(self):
         """Generate config value for PanTilt HAT and write to device."""
@@ -81,6 +88,15 @@ class PanTilt:
                 min=value_min, 
                 max=value_max))
 
+    def _check_range(self, value, value_min, value_max):
+        """Check the type and bounds check an expected int value."""
+
+        if value < value_min or value > value_max:
+            raise ValueError("Value {value} should be between {min} and {max}".format(
+                value=value, 
+                min=value_min, 
+                max=value_max))
+
     def _servo_degrees_to_us(self, angle, us_min, us_max):
         """Converts degrees into a servo pulse time in microseconds
 
@@ -88,7 +104,7 @@ class PanTilt:
 
         """
 
-        self._check_int_range(angle, -90, 90)
+        self._check_range(angle, -90, 90)
 
         angle += 90
         servo_range = us_max - us_min
@@ -300,9 +316,25 @@ class PanTilt:
 
         """
 
+        if not self._enable_servo1:
+            self._enable_servo1 = True
+            self._set_config()
+
         us_min, us_max = self._servo_range(0)
         us = self._servo_degrees_to_us(angle, us_min, us_max)
         self._i2c_write_word(self.REG_SERVO1, us)
+
+        if self._idle_timeout > 0:
+            if self._servo1_timeout is not None:
+                self._servo1_timeout.cancel()
+
+            self._servo1_timeout = Timer(self._idle_timeout, self._servo1_stop)
+            self._servo1_timeout.start()
+
+    def _servo1_stop(self):
+        self._servo1_timeout = None
+        self._enable_servo1 = False
+        self._set_config()
 
     def servo_two(self, angle):
         """Set position of servo 2 in degrees.
@@ -311,9 +343,27 @@ class PanTilt:
 
         """
 
+        if not self._enable_servo2:
+            self._enable_servo2 = True
+            self._set_config()
+
         us_min, us_max = self._servo_range(1)
         us = self._servo_degrees_to_us(angle, us_min, us_max)
         self._i2c_write_word(self.REG_SERVO2, us)
+
+        if self._idle_timeout > 0:
+            if self._servo1_timeout is not None:
+                self._servo1_timeout.cancel()
+
+            self._servo1_timeout = Timer(self._idle_timeout, self._servo1_stop)
+            self._servo1_timeout.start()
+
+    def _servo2_stop(self):
+        self._servo2_timeout = None
+        self._enable_servo2 = False
+        self._set_config()
+
+
 
     pan = servo_one
     tilt = servo_two

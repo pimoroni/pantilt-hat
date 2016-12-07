@@ -16,6 +16,8 @@ pantilthat = PanTilt(i2c_bus=SMBus(1))
 
 brightness = pantilthat.brightness
 
+idle_timeout = pantilthat.idle_timeout
+
 clear = pantilthat.clear
 
 light_mode = pantilthat.light_mode

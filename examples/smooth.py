@@ -6,15 +6,24 @@ import time
 import pantilthat
 
 
-pantilthat.light_mode(pantilthat.PWM)
-
 while True:
-    b = (math.sin(time.time() * 2) + 1) / 2
+    # Get the time in seconds
+    t = time.time()
+
+    # Generate a sine wave brightness transition from 0 to 1
+    b = (math.sin(t) + 1) / 2
+
+    # Convert brightness to 0 to 255
     b = int(b * 255.0)
-    t = round(time.time() * 1000) / 1000
-    a = round(math.sin(t) * 90)
-    pantilthat.pan(int(a))
-    pantilthat.tilt(int(a))
-    pantilthat.brightness(b)
-    print(a)
-    time.sleep(0.04)
+
+    # G enerate an angle using a sine wave (-1 to 1) multiplied by 90 (-90 to 90)
+    a = math.sin(t * 2) * 90
+
+    pantilthat.pan(a)
+    pantilthat.tilt(a)
+
+    # Two decimal places is quite enough!
+    print(round(a,2))
+
+    # Sleep for a bit so we're not hammering the HAT with updates
+    time.sleep(0.01)
