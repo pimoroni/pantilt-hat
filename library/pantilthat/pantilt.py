@@ -58,8 +58,15 @@ class PanTilt:
         atexit.register(self._atexit)
 
     def _atexit(self):
+        if self._servo1_timeout is not None:
+            self._servo1_timeout.cancel()
+
+        if self._servo2_timeout is not None:
+            self._servo2_timeout.cancel()
+
         self._enable_servo1 = False
         self._enable_servo2 = False
+
         self._set_config()
 
     def idle_timeout(self, value):
@@ -362,8 +369,6 @@ class PanTilt:
         self._servo2_timeout = None
         self._enable_servo2 = False
         self._set_config()
-
-
 
     pan = servo_one
     tilt = servo_two
