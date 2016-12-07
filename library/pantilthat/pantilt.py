@@ -1,4 +1,5 @@
 import time
+import atexit
 
 
 WS2812 = 1
@@ -24,10 +25,10 @@ class PanTilt:
         enable_servo2 = True,
         enable_lights = True,
         light_mode = WS2812,
-        servo1_min = 800,
-        servo1_max = 2300,
-        servo2_min = 800,
-        servo2_max = 2300,
+        servo1_min = 575,
+        servo1_max = 2325,
+        servo2_min = 575,
+        servo2_max = 2325,
         address = 0x15,
         i2c_bus = None):
 
@@ -48,6 +49,13 @@ class PanTilt:
 
         self._i2c_address = address
         self._i2c = i2c_bus
+        self._set_config()
+
+        atexit.register(self._atexit)
+
+    def _atexit(self):
+        self._enable_servo1 = False
+        self._enable_servo2 = False
         self._set_config()
 
     def _set_config(self):
