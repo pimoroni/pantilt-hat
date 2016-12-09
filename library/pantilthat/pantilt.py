@@ -252,8 +252,8 @@ class PanTilt:
             self._check_int_range(c, 0, 255)
 
         index *= 3
-        self._pixels[index]   = red
-        self._pixels[index+1] = green
+        self._pixels[index]   = green
+        self._pixels[index+1] = red
         self._pixels[index+2] = blue
 
     def show(self):
