@@ -359,11 +359,11 @@ class PanTilt:
         self._i2c_write_word(self.REG_SERVO2, us)
 
         if self._idle_timeout > 0:
-            if self._servo1_timeout is not None:
-                self._servo1_timeout.cancel()
+            if self._servo2_timeout is not None:
+                self._servo2_timeout.cancel()
 
-            self._servo1_timeout = Timer(self._idle_timeout, self._servo1_stop)
-            self._servo1_timeout.start()
+            self._servo2_timeout = Timer(self._idle_timeout, self._servo2_stop)
+            self._servo2_timeout.start()
 
     def _servo2_stop(self):
         self._servo2_timeout = None
