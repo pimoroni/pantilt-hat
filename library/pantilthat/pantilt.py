@@ -195,10 +195,19 @@ class PanTilt:
         self._light_mode = mode
         self._set_config()
 
-    def light_type(self, type):
-        """Set the light type for attached lights."""
+    def light_type(self, set_type):
+        """Set the light type for attached lights.
 
-        self._light_type = type
+        Set the type of lighting strip connected:
+
+        * RGB - WS2812 pixels with RGB pixel order
+        * RGB - WS2812 pixels with GRB pixel order
+        * RGBW - SK6812 pixels with RGBW pixel order
+        * GRBW - SK6812 pixels with GRBW pixel order
+
+        """
+
+        self._light_type = set_type
 
     def num_pixels(self):
         if self._light_type in [RGBW, GRBW]:
@@ -218,17 +227,18 @@ class PanTilt:
         # The brightness value is taken from the first register of the WS2812 chain
         self._i2c_write_byte(self.REG_WS2812, brightness)
 
-    def set_all(self, red, green, blue):
+    def set_all(self, red, green, blue, white=None):
         """Set all pixels in the buffer.
 
         :param red: Amount of red, from 0 to 255
         :param green: Amount of green, from 0 to 255
         :param blue: Amount of blue, from 0 to 255
+        :param white: Optional amount of white for RGBW and GRBW strips
 
         """
 
         for index in range(self.num_pixels()):
-            self.set_pixel(index, red, green, blue)
+            self.set_pixel(index, red, green, blue, white)
 
     def set_pixel_rgbw(self, index, red, green, blue, white):
         """Set a single pixel in the buffer for GRBW lighting stick
