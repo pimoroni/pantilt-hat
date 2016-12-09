@@ -8,6 +8,7 @@ import pantilthat
 
 
 pantilthat.light_mode(pantilthat.WS2812)
+pantilthat.light_type(pantilthat.GRBW)
 
 while True:
     t = time.time()

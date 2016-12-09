@@ -3,8 +3,13 @@ import time
 import atexit
 
 
-WS2812 = 1
 PWM = 0
+WS2812 = 1
+
+RGB = 0
+GRB = 1
+RGBW = 2
+GRBW = 3
 
 class PanTilt:
     """PanTilt HAT Driver
@@ -25,6 +30,7 @@ class PanTilt:
         enable_lights = True,
         idle_timeout = 2, # Idle timeout in seconds
         light_mode = WS2812,
+        light_type = RGB,
         servo1_min = 575,
         servo1_max = 2325,
         servo2_min = 575,
@@ -48,6 +54,7 @@ class PanTilt:
         self._servo_max = [servo1_max, servo2_max]
 
         self._light_mode = light_mode
+        self._light_type = light_type
 
         self.clear()
 
@@ -188,6 +195,17 @@ class PanTilt:
         self._light_mode = mode
         self._set_config()
 
+    def light_type(self, type):
+        """Set the light type for attached lights."""
+
+        self._light_type = type
+
+    def num_pixels(self):
+        if self._light_type in [RGBW, GRBW]:
+            return 18
+
+        return 24
+
     def brightness(self, brightness):
         """Set the brightness of the connected LED ring.
 
@@ -209,13 +227,11 @@ class PanTilt:
 
         """
 
-        for index in range(24):
+        for index in range(self.num_pixels()):
             self.set_pixel(index, red, green, blue)
 
     def set_pixel_rgbw(self, index, red, green, blue, white):
-        """Set a single pixel in the buffer for GRBW lighting stick.
-
-        Instead of driving 24 RGB pixels, you can drive 18 RGBW ones.
+        """Set a single pixel in the buffer for GRBW lighting stick
 
         :param index: Index of pixel from 0 to 17
         :param red: Amount of red, from 0 to 255
@@ -225,36 +241,55 @@ class PanTilt:
 
         """
 
-        self._check_int_range(index, 0, 17)
+        self.set_pixel(index, red, green, blue, white)
 
-        for c in [red, green, blue, white]:
-            self._check_int_range(c, 0, 255)
-
-        index *= 4
-        self._pixels[index]   = green
-        self._pixels[index+1] = red
-        self._pixels[index+2] = blue
         self._pixels[index+3] = white
 
-    def set_pixel(self, index, red, green, blue):
+    def set_pixel(self, index, red, green, blue, white=None):
         """Set a single pixel in the buffer.
 
         :param index: Index of pixel from 0 to 23
         :param red: Amount of red, from 0 to 255
         :param green: Amount of green, from 0 to 255
         :param blue: Amount of blue, from 0 to 255
+        :param white: Optional amount of white for RGBW and GRBW strips
 
         """
 
-        self._check_int_range(index, 0, 23)
+        self._check_int_range(index, 0, self.num_pixels() - 1)
 
         for c in [red, green, blue]:
             self._check_int_range(c, 0, 255)
 
-        index *= 3
-        self._pixels[index]   = red
-        self._pixels[index+1] = green
-        self._pixels[index+2] = blue
+        if white is not None:
+            self._check_int_range(white, 0, 255)
+
+        if self._light_type in [RGBW, GRBW]:
+            index *= 4
+            if self._light_type == RGBW:
+                self._pixels[index]   = red
+                self._pixels[index+1] = green
+                self._pixels[index+2] = blue
+
+            if self._light_type == GRBW:
+                self._pixels[index]   = green
+                self._pixels[index+1] = red
+                self._pixels[index+2] = blue
+
+            if white is not None:
+                self._pixels[index+3] = white
+
+        else:
+            index *= 3
+            if self._light_type == RGB:
+                self._pixels[index]   = red
+                self._pixels[index+1] = green
+                self._pixels[index+2] = blue
+
+            if self._light_type == GRB:
+                self._pixels[index]   = green
+                self._pixels[index+1] = red
+                self._pixels[index+2] = blue
 
     def show(self):
         """Display the buffer on the connected WS2812 strip."""
