@@ -8,10 +8,13 @@ import pantilthat
 
 
 pantilthat.light_mode(pantilthat.WS2812)
+pantilthat.light_type(pantilthat.GRBW)
+
+r, g, b, w = 0, 0, 0, 50
 
 while True:
     for x in range(18):
-        pantilthat.set_pixel_rgbw(x, 0, 0, 0, 255)
+        pantilthat.set_pixel(x, r, g, b, w)
 
     pantilthat.show()
 
