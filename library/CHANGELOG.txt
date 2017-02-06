@@ -1,3 +1,9 @@
+0.0.3
+-----
+
+* Added idle_timeout functionality to prevent idle servo jitter
+* Added options for RGB, GRB, RGBW and GRBW pixel types - RGBW and GRBW support up to 18 pixels
+
 0.0.2
 -----
 

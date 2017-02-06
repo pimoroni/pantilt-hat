@@ -1,3 +1,10 @@
+pantilthat (0.0.3) stable; urgency=low
+
+  * Added idle_timeout functionality to prevent idle servo jitter
+  * Added options for RGB, GRB, RGBW and GRBW pixel types - RGBW and GRBW support up to 18 pixels
+
+ -- Phil Howard <phil@pimoroni.com>  Tue, 24 Jan 2017 00:00:00 +0000
+
 pantilthat (0.0.2) stable; urgency=low
 
   * Corrected package dependencies
