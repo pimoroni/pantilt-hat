@@ -1,8 +1,8 @@
-#Pan-Tilt HAT
+# Pan-Tilt HAT
 
 Pan-Tilt HAT is a two-channel servo driver designed to control a tiny servo-powered Pan/Tilt assembly. It also controls either PWM-dimmed lights or WS2812 pixels; up to 24 RGB or 18 RGBW.
 
-##Installation
+## Installation
 
 **Full install ( recommended ):**
 
@@ -13,7 +13,7 @@ We've created a super-easy installation script that will install all pre-requisi
 In the new terminal window type:
 
 ```bash
-curl -sS https://get.pimoroni.com/pantilthat | bash
+curl https://get.pimoroni.com/pantilthat | bash
 ```
 
 If you choose to download examples you'll find them in `/home/pi/Pimoroni/pantilthat/`.
@@ -46,7 +46,7 @@ sudo pip2 install pantilthat
 
 In all cases you will have to enable the i2c bus.
 
-##Documentation & Support
+## Documentation & Support
 
 * Getting started - https://learn.pimoroni.com/tutorial/sandyj/assembling-pan-tilt-hat
 * Function reference - http://docs.pimoroni.com/pantilthat/
