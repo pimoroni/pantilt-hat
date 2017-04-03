@@ -1,4 +1,4 @@
-#PanTilt HAT Function Reference
+# PanTilt HAT Function Reference
 
 First import pantilthat:
 
@@ -8,7 +8,7 @@ import pantilthat
 
 The HAT will automatically be set up for you with some defaults.
 
-#Servos
+## Servos
 
 You can move a servo by giving it an angle between -90 and 90:
 
@@ -34,7 +34,7 @@ pantilthat.servo_enable(1, False)
 pantilthat.servo_enable(1, False)
 ```
 
-#Lights
+## Lights
 
 PanTilt HAT supports either up to 24 WS2812 LEDs, or a ring/strand of PWM-dimmable LEDs:
 IE the kind of lighting ring you'd get to power and control directly from the Pi.
@@ -46,7 +46,7 @@ pantilthat.light_mode(pantilthat.WS2812)
 pantilthat.light_mode(pantilthat.PWM)
 ```
 
-##PWM
+### PWM
 
 PWM controlled LEDs have only brightness control from 0 to 255:
 
@@ -54,7 +54,7 @@ PWM controlled LEDs have only brightness control from 0 to 255:
 pantilthat.brightness(255)
 ```
 
-##WS2812
+### WS2812
 
 With WS2812 LEDs connected (A NeoPixel ring, for example) you can set the colour of each LED:
 
@@ -69,4 +69,3 @@ Once you've set the colours you want, you must send the pixel data to PanTilt HA
 ```python
 pantilthat.show()
 ```
-
