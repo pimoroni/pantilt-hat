@@ -13,7 +13,7 @@ Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python:Depends}, python-smbus
 Suggests: python-picamera
-Description: python library designed to control Pan-Tilt HAT
+Description: Python library for the Pimoroni Pan-Tilt HAT
  Pan-Tilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
  Ideal for adding a Pan/Tilt camera to your Pi.
  .
@@ -24,7 +24,7 @@ Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python3:Depends}, python3-smbus
 Suggests: python3-picamera
-Description: python library designed to control Pan-Tilt HAT
+Description: Python library for the Pimoroni Pan-Tilt HAT
  Pan-Tilt HAT controls two servos and WS2812 or PWM-dimmed LEDs.
  Ideal for adding a Pan/Tilt camera to your Pi.
  .
