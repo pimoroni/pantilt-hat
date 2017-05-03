@@ -1,3 +1,11 @@
+pantilthat (0.0.4) stable; urgency=low
+
+  * New: get_pan and get_tilt methods to read back servo position from the driver
+  * Bugfix: Brightness does not set value unless light_mode == PWM
+  * Bugfix: Idle timeout Timer() instances daemonized to prevent blocking on exit
+
+ -- Phil Howard <phil@pimoroni.com>  Wed, 3 May 2017 00:00:00 +0000
+
 pantilthat (0.0.3) stable; urgency=low
 
   * Added idle_timeout functionality to prevent idle servo jitter
