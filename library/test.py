@@ -71,12 +71,15 @@ class SMBus:
 
         self._debug(addr, reg, data)
 
-    def read_byte_data(self, addr, reg, data):
+    def read_byte_data(self, addr, reg):
         global regs
 
         return regs[reg]
 
-        self._debug(addr, reg, data)
+    def read_word_data(self, addr, reg):
+        global regs
+
+        return (regs[reg] << 8) | regs[reg + 1]
 
 
 def i2c_assert(action, expect, message):
@@ -97,6 +100,7 @@ smbus = mock.Mock()
 smbus.SMBus = SMBus
 
 sys.modules['smbus'] = smbus
+sys.path.insert(0,".")
 
 import pantilthat
 
@@ -110,21 +114,21 @@ import pantilthat
 # Bit 2 - Enable Servo 2
 # Bit 1 - Enable Servo 1
 
-print("Testing help...")
-time.sleep(1)
-help(pantilthat.brightness)
-help(pantilthat.pan)
+#print("Testing help...")
+#time.sleep(1)
+#help(pantilthat.brightness)
+#help(pantilthat.pan)
 
 print("Testing constants...")
 assert pantilthat.WS2812 == 1, "pantilthat.WS2812 should equal 1"
 assert pantilthat.PWM == 0, "pantilthat.PWM should equal 0"
 print("OK!")
 
-# print("\nInstantiating library...")
-# pt = pantilthat.PanTilt()
 pt = pantilthat
 
-assert regs[REG_CONFIG] == 0b00001111, "Config reg incorrect!: {}".format(regs[REG_CONFIG])
+# Library should start up with servo1 and servo2 disabled
+# and the light mode should default to WS2812, enabled
+assert regs[REG_CONFIG] == 0b00001100, "Config reg incorrect!: {}".format(regs[REG_CONFIG])
 print("OK!")
 
 print("Testing servo aliases...")
@@ -156,14 +160,27 @@ i2c_assert(lambda:pt.servo_two(0),
            "Servo 2 regs contain incorrect value!")
 print("OK!")
 
+print("\n=== READBACK ===")
+
+assert hasattr(pt, "get_pan"), "Method get_pan() should exist!"
+assert hasattr(pt, "get_tilt"), "Method get_tilt() should exist!"
+
+for x in range(-90,91):
+    pt.pan(x)
+    pt.tilt(x)
+    #print("Pan  {}, got {}".format(x, pt.get_pan()))
+    #print("Tilt {}, got {}".format(x, pt.get_tilt()))
+    assert pt.get_pan() == x, "get_pan() should return {}, returned {}".format(x, pt.get_pan())
+    assert pt.get_tilt() == x, "get_tilt() should return {}, returned {}".format(x, pt.get_tilt())
+
 print("\nTesting full sweep...")
 # Perform a full sweep to catch any bounds errors
 for x in range(-90,91):
-	pt.pan(x)
-	pt.tilt(x)
+    pt.pan(x)
+    pt.tilt(x)
 for x in reversed(range(-90,91)):
-	pt.pan(x)
-	pt.tilt(x)
+    pt.pan(x)
+    pt.tilt(x)
 print("OK!")
 
 print("\nTesting servo_enable...")

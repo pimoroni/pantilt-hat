@@ -111,6 +111,20 @@ class PanTilt:
                 min=value_min, 
                 max=value_max))
 
+    def _servo_us_to_degrees(self, us, us_min, us_max):
+        """Converts pulse time in microseconds to degrees
+
+        :param us: Pulse time in microseconds
+        :param us_min: Minimum possible pulse time in microseconds
+        :param us_max: Maximum possible pulse time in microseconds
+
+        """
+
+        self._check_range(us, us_min, us_max)
+        servo_range = us_max - us_min
+        angle = (float(us - us_min) / float(servo_range)) * 180.0
+        return int(round(angle,0)) - 90
+
     def _servo_degrees_to_us(self, angle, us_min, us_max):
         """Converts degrees into a servo pulse time in microseconds
 
@@ -169,9 +183,19 @@ class PanTilt:
             raise IOError("Failed to write byte")
 
     def _i2c_read_byte(self, reg):
-        for x in (rangeself._i2c_retries):
+        for x in range(self._i2c_retries):
             try:
                 return self._i2c.read_byte_data(self._i2c_address, reg)
+            except IOError:
+                time.sleep(self._i2c_retry_time)
+                continue
+
+        raise IOError("Failed to read byte")
+
+    def _i2c_read_word(self, reg):
+        for x in range(self._i2c_retries):
+            try:
+                return self._i2c.read_word_data(self._i2c_address, reg)
             except IOError:
                 time.sleep(self._i2c_retry_time)
                 continue
@@ -361,6 +385,20 @@ class PanTilt:
         
         self._servo_max[index-1] = value
 
+    def get_servo_one(self):
+        """Get position of servo 1 in degrees."""
+
+        us_min, us_max = self._servo_range(0)
+        us = self._i2c_read_word(self.REG_SERVO1)
+        return self._servo_us_to_degrees(us, us_min, us_max)
+
+    def get_servo_two(self):
+        """Get position of servo 2 in degrees."""
+
+        us_min, us_max = self._servo_range(1)
+        us = self._i2c_read_word(self.REG_SERVO1)
+        return self._servo_us_to_degrees(us, us_min, us_max)
+
     def servo_one(self, angle):
         """Set position of servo 1 in degrees.
 
@@ -417,3 +455,5 @@ class PanTilt:
 
     pan = servo_one
     tilt = servo_two
+    get_pan = get_servo_one
+    get_tilt = get_servo_two
