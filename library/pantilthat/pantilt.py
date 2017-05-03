@@ -14,7 +14,7 @@ GRBW = 3
 class PanTilt:
     """PanTilt HAT Driver
 
-    Communicates with PanTilt HAT over i2c 
+    Communicates with PanTilt HAT over i2c
     to control pan, tilt and light functions
 
     """
@@ -77,6 +77,14 @@ class PanTilt:
         self._set_config()
 
     def idle_timeout(self, value):
+        """Set the idle timeout for the servos
+
+        Configure the time, in seconds, after which the servos will be automatically disabled.
+
+        :param value: Timeout in seconds
+
+        """
+
         self._idle_timeout = value
 
     def _set_config(self):
@@ -211,8 +219,11 @@ class PanTilt:
     def light_mode(self, mode):
         """Set the light mode for attached lights.
 
-        PanTiltHAT can drive either WS2812 pixels,
+        PanTiltHAT can drive either WS2812 or SK6812 pixels,
         or provide a PWM dimming signal for regular LEDs.
+
+        * PWM - PWM-dimmable LEDs
+        * WS2812 - 24 WS2812 or 18 SK6812 pixels
 
         """
 
@@ -249,14 +260,19 @@ class PanTilt:
     def brightness(self, brightness):
         """Set the brightness of the connected LED ring.
 
+        This only applies if light_mode has been set to PWM.
+
+        It will be ignored otherwise.
+
         :param brightness: Brightness from 0 to 255
 
         """
 
         self._check_int_range(brightness, 0, 255)
 
-        # The brightness value is taken from the first register of the WS2812 chain
-        self._i2c_write_byte(self.REG_WS2812, brightness)
+        if self._light_mode == PWM:
+            # The brightness value is taken from the first register of the WS2812 chain
+            self._i2c_write_byte(self.REG_WS2812, brightness)
 
     def set_all(self, red, green, blue, white=None):
         """Set all pixels in the buffer.
@@ -341,7 +357,7 @@ class PanTilt:
         self._i2c_write_byte(self.REG_UPDATE, 1)
 
     def servo_enable(self, index, state):
-        """Enables/disables a servo.
+        """Enable or disable a servo.
 
         Disabling a servo turns off the drive signal.
 
