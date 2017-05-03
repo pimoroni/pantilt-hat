@@ -25,18 +25,18 @@ class SMBus:
         regs[78] = 0 #0x4E: REG_UPDATE
 
         self._watch_regs = {
-            REG_CONFIG: 'REG_CONFIG', 
-            REG_SERVO1: 'REG_SERVO1', 
-            REG_SERVO2: 'REG_SERVO2', 
-            REG_WS2812: 'REG_WS2812', 
+            REG_CONFIG: 'REG_CONFIG',
+            REG_SERVO1: 'REG_SERVO1',
+            REG_SERVO2: 'REG_SERVO2',
+            REG_WS2812: 'REG_WS2812',
             REG_UPDATE: 'REG_UPDATE'
         }
 
         self._watch_len = {
-            REG_CONFIG: 1, 
-            REG_SERVO1: 2, 
-            REG_SERVO2: 2, 
-            REG_WS2812: 72, # 24 LEDs 
+            REG_CONFIG: 1,
+            REG_SERVO1: 2,
+            REG_SERVO2: 2,
+            REG_WS2812: 72, # 24 LEDs
             REG_UPDATE: 1
         }
 
@@ -100,9 +100,27 @@ smbus = mock.Mock()
 smbus.SMBus = SMBus
 
 sys.modules['smbus'] = smbus
-sys.path.insert(0,".")
+sys.path.insert(0, ".")
 
 import pantilthat
+
+
+
+#print("Testing help...")
+#time.sleep(1)
+#help(pantilthat.brightness)
+#help(pantilthat.pan)
+
+print("\nTesting constants...")
+assert pantilthat.WS2812 == 1, "pantilthat.WS2812 should equal 1"
+assert pantilthat.PWM == 0, "pantilthat.PWM should equal 0"
+assert pantilthat.RGB == 0, "pantilthat.RGB should equal 0"
+assert pantilthat.GRB == 1, "pantilthat.GRB should equal 1"
+assert pantilthat.RGBW == 2, "pantilthat.RGBW should equal 2"
+assert pantilthat.GRBW == 3, "pantilthat.GRBW should equal 3"
+print("OK!")
+
+pt = pantilthat
 
 # Config Register
 # Bit  8 - N/A
@@ -113,59 +131,58 @@ import pantilthat
 # Bit 3 - Enable Lights
 # Bit 2 - Enable Servo 2
 # Bit 1 - Enable Servo 1
-
-#print("Testing help...")
-#time.sleep(1)
-#help(pantilthat.brightness)
-#help(pantilthat.pan)
-
-print("Testing constants...")
-assert pantilthat.WS2812 == 1, "pantilthat.WS2812 should equal 1"
-assert pantilthat.PWM == 0, "pantilthat.PWM should equal 0"
-print("OK!")
-
-pt = pantilthat
-
+#
 # Library should start up with servo1 and servo2 disabled
 # and the light mode should default to WS2812, enabled
 assert regs[REG_CONFIG] == 0b00001100, "Config reg incorrect!: {}".format(regs[REG_CONFIG])
 print("OK!")
 
-print("Testing servo aliases...")
+# Check every method we expect to exit, actually exists
+print("\nTesting for API consistency...")
+for method in ["idle_timeout", "servo_enable", "servo_pulse_max", "servo_pulse_min",
+               "brightness", "clear", "light_mode", "light_type", "set_all",
+               "set_pixel", "set_pixel_rgbw", "show",
+               "servo_one", "pan", "get_pan", "get_servo_one",
+               "servo_two", "tilt", "get_tilt", "get_servo_two"]:
+
+    assert hasattr(pt, method), "Method {method}() should exist!".format(method=method)
+    assert callable(getattr(pt, method)), "Method {method}() should be callable!".format(method=method)
+print("OK!")
+
+print("\nTesting servo aliases...")
 assert pt.pan == pt.servo_one, "Method 'pan' should alias 'servo_one'"
 assert pt.tilt == pt.servo_two, "Method 'tilt' should alias 'servo_two'"
+assert pt.get_pan == pt.get_servo_one, "Method 'get_pan' should alias 'get_servo_one'"
+assert pt.get_tilt == pt.get_servo_two, "Method 'get_tilt' should alias 'get_servo_two'"
 print("OK!")
 
 print("\nSetting known good config...")
-pt.servo_enable(1,True)
-pt.servo_enable(2,True)
+pt.servo_enable(1, True)
+pt.servo_enable(2, True)
 
-pt.servo_pulse_min(1,510)
-pt.servo_pulse_max(1,2300)
+pt.servo_pulse_min(1, 510)
+pt.servo_pulse_max(1, 2300)
 
-pt.servo_pulse_min(2,510)
-pt.servo_pulse_max(2,2300)
+pt.servo_pulse_min(2, 510)
+pt.servo_pulse_max(2, 2300)
 
 print("\n=== SERVOS ===")
 
 print("\nSetting servo one to 0 degrees...")
-i2c_assert(lambda:pt.servo_one(0), 
-           lambda:regs[REG_SERVO1] == 5 and regs[REG_SERVO1 + 1] == 125,
+i2c_assert(lambda: pt.servo_one(0), 
+           lambda: regs[REG_SERVO1] == 5 and regs[REG_SERVO1 + 1] == 125,
            "Servo 1 regs contain incorrect value!")
 print("OK!")
 
 print("\nSetting servo two to 0 degrees...")
-i2c_assert(lambda:pt.servo_two(0),
-           lambda:regs[REG_SERVO2] == 5 and regs[REG_SERVO2 + 1] == 125,
+i2c_assert(lambda: pt.servo_two(0),
+           lambda: regs[REG_SERVO2] == 5 and regs[REG_SERVO2 + 1] == 125,
            "Servo 2 regs contain incorrect value!")
 print("OK!")
 
 print("\n=== READBACK ===")
 
-assert hasattr(pt, "get_pan"), "Method get_pan() should exist!"
-assert hasattr(pt, "get_tilt"), "Method get_tilt() should exist!"
-
-for x in range(-90,91):
+for x in range(-90, 91):
     pt.pan(x)
     pt.tilt(x)
     #print("Pan  {}, got {}".format(x, pt.get_pan()))
@@ -175,10 +192,10 @@ for x in range(-90,91):
 
 print("\nTesting full sweep...")
 # Perform a full sweep to catch any bounds errors
-for x in range(-90,91):
+for x in range(-90, 91):
     pt.pan(x)
     pt.tilt(x)
-for x in reversed(range(-90,91)):
+for x in reversed(range(-90, 91)):
     pt.pan(x)
     pt.tilt(x)
 print("OK!")
@@ -187,30 +204,52 @@ print("\nTesting servo_enable...")
 pt.servo_enable(1,False)
 pt.servo_enable(2,False)
 
-assert regs[REG_CONFIG] == 0b00001100, "Config reg {} incorrect! Should be 0b00001100".format(regs[REG_CONFIG])
+assert regs[REG_CONFIG] == 0b00001100, "Config reg {config:08b} incorrect! Should be 00001100".format(config=regs[REG_CONFIG])
 print("OK")
+
+print("\nTesting value/range checks...")
+
+assert_raises(lambda: pt.servo_enable(3, True), ValueError,
+              "ValueError not raised by servo_enable index out of range")
+print("OK! - ValueError raised by servo_enable index of out range.")
+
+assert_raises(lambda: pt.servo_enable(1, "banana"), ValueError,
+              "ValueError not raised by servo_enable value invalid")
+print("OK! - ValueError raised by servo_enable value invalid.")
+
+assert_raises(lambda: pt.servo_pulse_min(3, 510), ValueError,
+              "ValueError not raised by servo_pulse_min index out of range")
+print("OK! - ValueError raised by servo_pulse_min index of out range.")
+
+assert_raises(lambda: pt.servo_pulse_max(3, 510), ValueError,
+              "ValueError not raised by servo_pulse_min index out of range")
+print("OK! - ValueError raised by servo_pulse_min index of out range.")
 
 print("\n=== LIGHTS ===")
 
 print("\nTesting range checks...")
-assert_raises(lambda:pt.set_pixel(34, 255, 255, 255), ValueError, "ValueError not raised by set_pixel index out of range")
+
+assert_raises(lambda: pt.set_pixel(34, 255, 255, 255), ValueError,
+              "ValueError not raised by set_pixel index out of range")
 print("OK! - ValueError raised by set_pixel index of out range.")
-assert_raises(lambda:pt.set_pixel(0, 256, 0, 0), ValueError, "ValueError not raised by set_pixel colour out of range")
+
+assert_raises(lambda: pt.set_pixel(0, 256, 0, 0), ValueError,
+              "ValueError not raised by set_pixel colour out of range")
 print("OK! - ValueError raised by colour out of range.")
 
 print("\nTesting set_pixel...")
 pt.set_pixel(0, 255, 255, 255)
 
-i2c_assert(lambda:pt.show(),
-           lambda:sum(regs[REG_WS2812:REG_WS2812 + 72]) == 255 * 3 and regs[REG_UPDATE] == 1,
+i2c_assert(lambda: pt.show(),
+           lambda: sum(regs[REG_WS2812:REG_WS2812 + 72]) == 255 * 3 and regs[REG_UPDATE] == 1,
            "WS2812 regs contain incorrect value!")
 print("OK!")
 
 print("\nTesting set_all...")
 pt.set_all(255, 255, 255)
 
-i2c_assert(lambda:pt.show(),
-           lambda:sum(regs[REG_WS2812:REG_WS2812 + 72]) == 255 * 3 * 24 and regs[REG_UPDATE] == 1,
+i2c_assert(lambda: pt.show(),
+           lambda: sum(regs[REG_WS2812:REG_WS2812 + 72]) == 255 * 3 * 24 and regs[REG_UPDATE] == 1,
            "WS2812 regs contain incorrect value!")
 print("OK!")
 
@@ -220,4 +259,3 @@ assert regs[REG_CONFIG] == 0b00000100 # The servos were disabled above
 print("OK!")
 
 print("\nWell done, you've not broken anything!") # I'll never forgive myself :D
-
