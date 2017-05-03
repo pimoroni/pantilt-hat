@@ -27,16 +27,16 @@ class PanTilt:
     NUM_LEDS = 24
 
     def __init__(self,
-        enable_lights = True,
-        idle_timeout = 2, # Idle timeout in seconds
-        light_mode = WS2812,
-        light_type = RGB,
-        servo1_min = 575,
-        servo1_max = 2325,
-        servo2_min = 575,
-        servo2_max = 2325,
-        address = 0x15,
-        i2c_bus = None):
+                 enable_lights=True,
+                 idle_timeout=2, # Idle timeout in seconds
+                 light_mode=WS2812,
+                 light_type=RGB,
+                 servo1_min=575,
+                 servo1_max=2325,
+                 servo2_min=575,
+                 servo2_max=2325,
+                 address=0x15,
+                 i2c_bus=None):
 
         self._idle_timeout = idle_timeout
         self._servo1_timeout = None
@@ -98,8 +98,8 @@ class PanTilt:
             raise TypeError("Value should be an integer")
         if value < value_min or value > value_max:
             raise ValueError("Value {value} should be between {min} and {max}".format(
-                value=value, 
-                min=value_min, 
+                value=value,
+                min=value_min,
                 max=value_max))
 
     def _check_range(self, value, value_min, value_max):
@@ -107,8 +107,8 @@ class PanTilt:
 
         if value < value_min or value > value_max:
             raise ValueError("Value {value} should be between {min} and {max}".format(
-                value=value, 
-                min=value_min, 
+                value=value,
+                min=value_min,
                 max=value_max))
 
     def _servo_us_to_degrees(self, us, us_min, us_max):
@@ -123,7 +123,7 @@ class PanTilt:
         self._check_range(us, us_min, us_max)
         servo_range = us_max - us_min
         angle = (float(us - us_min) / float(servo_range)) * 180.0
-        return int(round(angle,0)) - 90
+        return int(round(angle, 0)) - 90
 
     def _servo_degrees_to_us(self, angle, us_min, us_max):
         """Converts degrees into a servo pulse time in microseconds
@@ -211,7 +211,7 @@ class PanTilt:
     def light_mode(self, mode):
         """Set the light mode for attached lights.
 
-        PanTiltHAT can drive either WS2812 pixels, 
+        PanTiltHAT can drive either WS2812 pixels,
         or provide a PWM dimming signal for regular LEDs.
 
         """
@@ -234,6 +234,13 @@ class PanTilt:
         self._light_type = set_type
 
     def num_pixels(self):
+        """Returns the supported number of pixels depending on light mode.
+
+        RGBW or GRBW support 18 pixels
+        RGB supports 24 pixels
+
+        """
+
         if self._light_type in [RGBW, GRBW]:
             return 18
 
@@ -292,8 +299,8 @@ class PanTilt:
 
         self._check_int_range(index, 0, self.num_pixels() - 1)
 
-        for c in [red, green, blue]:
-            self._check_int_range(c, 0, 255)
+        for color in [red, green, blue]:
+            self._check_int_range(color, 0, 255)
 
         if white is not None:
             self._check_int_range(white, 0, 255)
@@ -301,12 +308,12 @@ class PanTilt:
         if self._light_type in [RGBW, GRBW]:
             index *= 4
             if self._light_type == RGBW:
-                self._pixels[index]   = red
+                self._pixels[index] = red
                 self._pixels[index+1] = green
                 self._pixels[index+2] = blue
 
             if self._light_type == GRBW:
-                self._pixels[index]   = green
+                self._pixels[index] = green
                 self._pixels[index+1] = red
                 self._pixels[index+2] = blue
 
@@ -316,23 +323,22 @@ class PanTilt:
         else:
             index *= 3
             if self._light_type == RGB:
-                self._pixels[index]   = red
+                self._pixels[index] = red
                 self._pixels[index+1] = green
                 self._pixels[index+2] = blue
 
             if self._light_type == GRB:
-                self._pixels[index]   = green
+                self._pixels[index] = green
                 self._pixels[index+1] = red
                 self._pixels[index+2] = blue
 
     def show(self):
         """Display the buffer on the connected WS2812 strip."""
 
-        self._i2c_write_block(self.REG_WS2812,      self._pixels[:32])
+        self._i2c_write_block(self.REG_WS2812, self._pixels[:32])
         self._i2c_write_block(self.REG_WS2812 + 32, self._pixels[32:64])
         self._i2c_write_block(self.REG_WS2812 + 64, self._pixels[64:])
         self._i2c_write_byte(self.REG_UPDATE, 1)
-        #time.sleep(0.01)
 
     def servo_enable(self, index, state):
         """Enables/disables a servo.
@@ -348,10 +354,10 @@ class PanTilt:
 
         """
 
-        if index not in [1,2]:
+        if index not in [1, 2]:
             raise ValueError("Servo index must be 1 or 2")
-        
-        if state not in [True,False]:
+
+        if state not in [True, False]:
             raise ValueError("State must be True/False")
 
         if index == 1:
@@ -368,9 +374,9 @@ class PanTilt:
 
         """
 
-        if index not in [1,2]:
+        if index not in [1, 2]:
             raise ValueError("Servo index must be 1 or 2")
-        
+
         self._servo_min[index-1] = value
 
     def servo_pulse_max(self, index, value):
@@ -380,9 +386,9 @@ class PanTilt:
 
         """
 
-        if index not in [1,2]:
+        if index not in [1, 2]:
             raise ValueError("Servo index must be 1 or 2")
-        
+
         self._servo_max[index-1] = value
 
     def get_servo_one(self):
@@ -419,6 +425,7 @@ class PanTilt:
                 self._servo1_timeout.cancel()
 
             self._servo1_timeout = Timer(self._idle_timeout, self._servo1_stop)
+            self._servo1_timeout.daemon = True
             self._servo1_timeout.start()
 
     def _servo1_stop(self):
@@ -446,6 +453,7 @@ class PanTilt:
                 self._servo2_timeout.cancel()
 
             self._servo2_timeout = Timer(self._idle_timeout, self._servo2_stop)
+            self._servo2_timeout.daemon = True
             self._servo2_timeout.start()
 
     def _servo2_stop(self):
