@@ -253,9 +253,22 @@ i2c_assert(lambda: pt.show(),
            "WS2812 regs contain incorrect value!")
 print("OK!")
 
+print("\nChecking brightness ignored in WS2812 mode...")
+expected = 255
+pt.brightness(222)
+assert regs[REG_WS2812] == 255, "Brightness has affected WS2812 mode. REG_WS2812 is {} should be {}".format(regs[REG_WS2812], expected)
+print("OK!")
+
 print("\nChanging light mode...")
+expected = 0b00000100
 pt.light_mode(pantilthat.PWM)
-assert regs[REG_CONFIG] == 0b00000100 # The servos were disabled above
+assert regs[REG_CONFIG] == expected, "Failed to change light mode. REG_CONFIG is {0:08b} should be {1:08b}".format(regs[REG_CONFIG], expected) # The servos were disabled above
+print("OK!")
+
+print("\nChanging brightness...")
+expected = 123
+pt.brightness(expected)
+assert regs[REG_WS2812] == expected, "Failed to change rightness. REG_WS2812 is {} should be {}".format(regs[REG_WS2812], expected)
 print("OK!")
 
 print("\nWell done, you've not broken anything!") # I'll never forgive myself :D
