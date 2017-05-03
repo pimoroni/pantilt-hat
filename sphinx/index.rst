@@ -1,6 +1,8 @@
 .. role:: python(code)
    :language: python
 
+.. currentmodule:: pantilthat
+
 Welcome
 -------
 
@@ -15,76 +17,91 @@ Pan-Tilt HAT lets you mount and control one of our pan-tilt modules right on top
 At A Glance
 -----------
 
-.. autoclassoutline:: pantilthat.PanTilt
+.. autoclassoutline:: PanTilt
    :members:
 
 Set Brightness
 --------------
 
-.. automethod:: pantilthat.pantilthat.brightness
+.. automethod:: pantilthat.brightness
 
 Clear
 -----
 
-.. automethod:: pantilthat.pantilthat.clear
+.. automethod:: pantilthat.clear
 
-Set Light Mode
---------------
+Set Light Mode & Type
+---------------------
 
-.. automethod:: pantilthat.pantilthat.light_mode
+.. automethod:: pantilthat.light_mode
+
+.. automethod:: pantilthat.light_type
 
 Pan
 ---
 
-.. automethod:: pantilthat.pantilthat.pan
+.. automethod:: pantilthat.pan
 
-.. automethod:: pantilthat.pantilthat.servo_one
+.. automethod:: pantilthat.servo_one
+
+.. automethod:: pantilthat.get_pan
 
 Tilt
 ----
 
-.. automethod:: pantilthat.pantilthat.tilt
+.. automethod:: pantilthat.tilt
 
-.. automethod:: pantilthat.pantilthat.servo_two
+.. automethod:: pantilthat.servo_two
+
+.. automethod:: pantilthat.get_tilt
 
 Servo Enable
 ------------
 
-.. automethod:: pantilthat.pantilthat.servo_enable
+.. automethod:: pantilthat.servo_enable
+
+Servo Idle Timeout
+------------------
+
+.. automethod:: pantilthat.idle_timeout
 
 Servo Pulse Min
 ---------------
 
-.. automethod:: pantilthat.pantilthat.servo_pulse_min
+.. automethod:: pantilthat.servo_pulse_min
 
 Servo Pulse Max
 ---------------
 
-.. automethod:: pantilthat.pantilthat.servo_pulse_max
+.. automethod:: pantilthat.servo_pulse_max
 
 Set All LEDs
 ------------
 
-.. automethod:: pantilthat.pantilthat.set_all
+.. automethod:: pantilthat.set_all
 
 Set A LED
 ---------
 
-.. automethod:: pantilthat.pantilthat.set_pixel
+.. automethod:: pantilthat.set_pixel
 
 Set A LED (RGBW)
 ----------------
 
-.. automethod:: pantilthat.pantilthat.set_pixel_rgbw
+.. automethod:: pantilthat.set_pixel_rgbw
 
 Show
 ----
 
-.. automethod:: pantilthat.pantilthat.show
+.. automethod:: pantilthat.show
 
 Constants
 ---------
 
-* :python:`WS2812 = 1` - used with :python:`pantilthat.light_mode` to set WS2812 LEDs
+* :python:`WS2812 = 1` - used with :python:`pantilthat.light_mode` to set WS2812/SK6812 LEDs
 * :python:`PWM = 0` - used with :python:`pantilthat.light_mode` to set PWM dimmed LEDs
 
+* :python:`RGB = 0` - used with :python:`pantilthat.light_type` to set RGB WS2812 LEDs
+* :python:`GRB = 1` - used with :python:`pantilthat.light_type` to set GRB WS2812 LEDs
+* :python:`RGBW = 2` - used with :python:`pantilthat.light_type` to set RGBW SK6812 LEDs
+* :python:`GRBW = 3` - used with :python:`pantilthat.light_type` to set GRBW SK6812 LEDs
