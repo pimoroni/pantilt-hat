@@ -31,7 +31,7 @@ If you want to turn the servos off to save battery power for example, you can:
 
 ```python
 pantilthat.servo_enable(1, False)
-pantilthat.servo_enable(1, False)
+pantilthat.servo_enable(2, False)
 ```
 
 ## Lights
