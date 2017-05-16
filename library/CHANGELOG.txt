@@ -1,3 +1,10 @@
+0.0.4
+-----
+
+* New: get_pan and get_tilt methods to read back servo position
+* Bugfix: Brightness does not set value unless light_mode == PWM
+* Bugfix: Idle timeout Timer() daemonized to prevent blocking on exit
+
 0.0.3
 -----
 

@@ -39,7 +39,7 @@ classifiers = ['Development Status :: 5 - Production/Stable',
 
 setup(
     name            = 'pantilthat',
-    version         = '0.0.3',
+    version         = '0.0.4',
     author          = 'Philip Howard',
     author_email    = 'phil@pimoroni.com',
     description     = """Python library for driving Pimoroni PanTiltHAT!""",

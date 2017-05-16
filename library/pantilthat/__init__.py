@@ -10,7 +10,7 @@ except ImportError:
 
 from .pantilt import PanTilt, WS2812, PWM, RGB, GRB, RGBW, GRBW
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 pantilthat = PanTilt(i2c_bus=SMBus(1))
 
