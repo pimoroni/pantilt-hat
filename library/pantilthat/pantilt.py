@@ -418,7 +418,7 @@ class PanTilt:
         """Get position of servo 2 in degrees."""
 
         us_min, us_max = self._servo_range(1)
-        us = self._i2c_read_word(self.REG_SERVO1)
+        us = self._i2c_read_word(self.REG_SERVO2)
         return self._servo_us_to_degrees(us, us_min, us_max)
 
     def servo_one(self, angle):
