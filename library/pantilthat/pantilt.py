@@ -300,8 +300,6 @@ class PanTilt:
 
         self.set_pixel(index, red, green, blue, white)
 
-        self._pixels[index+3] = white
-
     def set_pixel(self, index, red, green, blue, white=None):
         """Set a single pixel in the buffer.
 
