@@ -38,6 +38,8 @@ class PanTilt:
                  address=0x15,
                  i2c_bus=None):
 
+        self._is_setup = False
+
         self._idle_timeout = idle_timeout
         self._servo1_timeout = None
         self._servo2_timeout = None
@@ -56,13 +58,28 @@ class PanTilt:
         self._light_mode = light_mode
         self._light_type = light_type
 
-        self.clear()
-
         self._i2c_address = address
         self._i2c = i2c_bus
-        self._set_config()
 
+    def setup(self):
+        if self._is_setup:
+            return True
+
+        if self._i2c is None:
+            try:
+                from smbus import SMBus
+                self._i2c = SMBus(1)
+            except ImportError:
+                if version_info[0] < 3:
+                    raise ImportError("This library requires python-smbus\nInstall with: sudo apt-get install python-smbus")
+                elif version_info[0] == 3:
+                    raise ImportError("This library requires python3-smbus\nInstall with: sudo apt-get install python3-smbus")
+
+        self.clear()
+        self._set_config()
         atexit.register(self._atexit)
+
+        self._is_setup = True
 
     def _atexit(self):
         if self._servo1_timeout is not None:
@@ -227,6 +244,8 @@ class PanTilt:
 
         """
 
+        self.setup()
+
         self._light_mode = mode
         self._set_config()
 
@@ -267,6 +286,8 @@ class PanTilt:
         :param brightness: Brightness from 0 to 255
 
         """
+
+        self.setup()
 
         self._check_int_range(brightness, 0, 255)
 
@@ -349,6 +370,8 @@ class PanTilt:
     def show(self):
         """Display the buffer on the connected WS2812 strip."""
 
+        self.setup()
+
         self._i2c_write_block(self.REG_WS2812, self._pixels[:32])
         self._i2c_write_block(self.REG_WS2812 + 32, self._pixels[32:64])
         self._i2c_write_block(self.REG_WS2812 + 64, self._pixels[64:])
@@ -367,6 +390,8 @@ class PanTilt:
         :param state: Servo state: True = on, False = off
 
         """
+
+        self.setup()
 
         if index not in [1, 2]:
             raise ValueError("Servo index must be 1 or 2")
@@ -408,12 +433,16 @@ class PanTilt:
     def get_servo_one(self):
         """Get position of servo 1 in degrees."""
 
+        self.setup()
+
         us_min, us_max = self._servo_range(0)
         us = self._i2c_read_word(self.REG_SERVO1)
         return self._servo_us_to_degrees(us, us_min, us_max)
 
     def get_servo_two(self):
         """Get position of servo 2 in degrees."""
+
+        self.setup()
 
         us_min, us_max = self._servo_range(1)
         us = self._i2c_read_word(self.REG_SERVO2)
@@ -425,6 +454,8 @@ class PanTilt:
         :param angle: Angle in degrees from -90 to 90
 
         """
+
+        self.setup()
 
         if not self._enable_servo1:
             self._enable_servo1 = True
@@ -453,6 +484,8 @@ class PanTilt:
         :param angle: Angle in degrees from -90 to 90
 
         """
+
+        self.setup()
 
         if not self._enable_servo2:
             self._enable_servo2 = True
