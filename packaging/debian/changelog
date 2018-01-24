@@ -1,3 +1,9 @@
+pantilthat (0.0.5) stable; urgency=low
+
+  * Bugfix: deferred setup to prevent side-effects upon import
+
+ -- Phil Howard <phil@pimoroni.com>  Wed, 24 Jan 2018 00:00:00 +0000
+
 pantilthat (0.0.4) stable; urgency=low
 
   * New: get_pan and get_tilt methods to read back servo position
