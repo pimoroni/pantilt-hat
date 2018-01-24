@@ -1,3 +1,8 @@
+0.0.5
+-----
+
+* Bugfix: deferred setup to prevent side-effects upon import
+
 0.0.4
 -----
 
