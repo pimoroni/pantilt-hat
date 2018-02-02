@@ -1,6 +1,8 @@
 0.0.5
 -----
 
+* Bugfix: fix to set_pixel_rgbw
+* Bugfix: fix so that get_servo_two returns correct value
 * Bugfix: deferred setup to prevent side-effects upon import
 
 0.0.4

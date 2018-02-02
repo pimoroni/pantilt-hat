@@ -1,8 +1,10 @@
 pantilthat (0.0.5) stable; urgency=low
 
+  * Bugfix: fix to set_pixel_rgbw
+  * Bugfix: fix so that get_servo_two returns correct value
   * Bugfix: deferred setup to prevent side-effects upon import
 
- -- Phil Howard <phil@pimoroni.com>  Wed, 24 Jan 2018 00:00:00 +0000
+ -- Phil Howard <phil@pimoroni.com>  Fri, 2 Feb 2018 00:00:00 +0000
 
 pantilthat (0.0.4) stable; urgency=low
 
