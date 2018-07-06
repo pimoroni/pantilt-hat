@@ -2,7 +2,7 @@ from sys import exit, version_info
 
 from .pantilt import PanTilt, WS2812, PWM, RGB, GRB, RGBW, GRBW
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 
 pantilthat = PanTilt()
 
