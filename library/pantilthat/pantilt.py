@@ -1,6 +1,7 @@
 from threading import Timer
 import time
 import atexit
+from sys import version_info
 
 
 PWM = 0

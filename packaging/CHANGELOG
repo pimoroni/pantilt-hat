@@ -1,8 +1,9 @@
 pantilthat (0.0.6) stable; urgency=low
 
   * Bugfix: return 0 if get_servo_1/2 values are out of range
+  * Bugfix: import sys.version_info for missing module warnings
 
- -- Phil Howard <phil@pimoroni.com>  Fri, 6 Jul 2018 00:00:00 +0000
+ -- Phil Howard <phil@pimoroni.com>  Saturday, 20 Oct 2018 00:00:00 +0000
 
 pantilthat (0.0.5) stable; urgency=low
 

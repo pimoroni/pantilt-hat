@@ -2,6 +2,7 @@
 -----
 
 * Bugfix: return 0 if get_servo_1/2 values are out of range
+* Bugfix: import sys.version_info for missing module warnings
 
 0.0.5
 -----
