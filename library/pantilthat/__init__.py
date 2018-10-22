@@ -4,6 +4,8 @@ __version__ = '0.0.6'
 
 pantilthat = PanTilt()
 
+setup = pantilthat.setup
+
 idle_timeout = pantilthat.idle_timeout
 servo_enable = pantilthat.servo_enable
 servo_pulse_max = pantilthat.servo_pulse_max

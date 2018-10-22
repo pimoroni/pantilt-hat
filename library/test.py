@@ -96,14 +96,26 @@ def assert_raises(action, expect, message):
     sys.exit(1)
 
 
+
+import pantilthat
+import sys
+import atexit
+import threading
+
+old_path = sys.path
+sys.path = ['.']
+
+assert_raises(lambda: pantilthat.setup(), ImportError, "ImportError not raised by pantilthat.setup() when missing SMbus!")
+
+sys.path = old_path
+
 smbus = mock.Mock()
 smbus.SMBus = SMBus
 
 sys.modules['smbus'] = smbus
 sys.path.insert(0, ".")
 
-import pantilthat
-
+pantilthat.setup()
 
 
 #print("Testing help...")
