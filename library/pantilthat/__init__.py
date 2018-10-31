@@ -1,6 +1,6 @@
 from .pantilt import PanTilt, WS2812, PWM, RGB, GRB, RGBW, GRBW
 
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 
 pantilthat = PanTilt()
 

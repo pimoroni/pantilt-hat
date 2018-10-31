@@ -1,3 +1,8 @@
+0.0.7
+-----
+
+* Re-release of previous version for version parity between apt/pip
+
 0.0.6
 -----
 
