@@ -69,6 +69,16 @@ sudo python3 setup.py install
 
 In all cases you will have to enable the i2c bus.
 
+## Breakout Header Pinout
+
+The breakout header on Pan Tilt HAT is connected directly to the GPIO pins.
+
+Below is a map of the breakout functions and corresponding BCM pins:
+
+| SDA | SCL | TX | RX | PWM | MOSI | MISO | SCLK | CEO |
+| --- | --- | -- | -- | --- | ---- | ---- | ---- | --- |
+| 2   | 3   | 14 | 15 | 18  | 10   | 9    | 11   | 8   |
+
 ## Documentation & Support
 
 * Guides and tutorials - https://learn.pimoroni.com/pan-tilt-hat
