@@ -7,6 +7,7 @@ import signal
 _clear_on_exit = True
 _brightness    = 0.2
 NUM_PIXELS     = 8
+pixels = [[0, 0, 0, _brightness]] * NUM_PIXELS
 
 def _exit():
     if _clear_on_exit:
@@ -28,6 +29,7 @@ def set_brightness(brightness):
 
 
 def clear():
+    pixels[:] = [[0, 0, 0, _brightness]] * NUM_PIXELS
     pantilthat.clear()
 
 
@@ -39,13 +41,17 @@ def set_all(r, g, b, brightness=None):
     global _brightness
     if brightness is not None:
         _brightness = brightness
+    pixels[:] = [[r, g, b, _brightness]] * NUM_PIXELS
     pantilthat.set_all(int(r*_brightness), int(g*_brightness), int(b*_brightness))
 
+def get_pixel(x):
+    return pixels[0]
 
 def set_pixel(x, r, g, b, brightness=None):
     global _brightness
     if brightness is not None:
         _brightness = brightness
+    pixels[x] = [r, g, b, _brightness]
     pantilthat.set_pixel(x, int(r*_brightness), int(g*_brightness), int(b*_brightness))
 
 
