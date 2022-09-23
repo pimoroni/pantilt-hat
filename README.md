@@ -19,44 +19,21 @@ In the new terminal window type the command exactly as it appears below (check f
 curl https://get.pimoroni.com/pantilthat | bash
 ```
 
-Alternatively, on Raspbian, you can download the `pimoroni-dashboard` and install your product by browsing to the relevant entry:
-
-```bash
-sudo apt-get install pimoroni
-```
-(you will find the Dashboard under 'Accessories' too, in the Pi menu - or just run `pimoroni-dashboard` at the command line)
-
-If you choose to download examples you'll find them in `/home/pi/Pimoroni/pantilthat/`.
-
 ### Manual install:
 
-#### Library install for Python 3:
-
-on Raspbian:
+Enable i2c:
 
 ```bash
-sudo apt-get install python3-pantilthat
+sudo raspi-config nonint do_i2c 0
 ```
 
-other environments: 
+Install the library:
 
 ```bash
-sudo pip3 install pantilthat
+python3 -m pip install pantilthat
 ```
 
-#### Library install for Python 2:
-
-on Raspbian:
-
-```bash
-sudo apt-get install python-pantilthat
-```
-
-other environments: 
-
-```bash
-sudo pip2 install pantilthat
-```
+ℹ️ Depending on your system, you might need to use `sudo` for the above command.
 
 ### Development:
 
