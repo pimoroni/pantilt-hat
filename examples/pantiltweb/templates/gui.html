@@ -63,12 +63,12 @@
                     switch(e.keyCode){
                         case 38: // Arrow Up
                             current_direction = 'tilt';
-                            current_angle = 1;
+                            current_angle = -1;
                             interval = setInterval(pantilt,pantilt_speed);
                             break;
                         case 40: // Arrow Down
                             current_direction = 'tilt';
-                            current_angle = -1;
+                            current_angle = 1;
                             interval = setInterval(pantilt,pantilt_speed);
                             break;
                         case 37: // Arrow Left
